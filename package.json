@@ -1,0 +1,30 @@
+{
+  "name": "comet",
+  "version": "1.0.0",
+  "description": "Repository manager for @phntms users",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robinojw/comet.git"
+  },
+  "author": "robin.white@phntms.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/robinojw/comet/issues"
+  },
+  "homepage": "https://github.com/robinojw/comet#readme",
+  "dependencies": {
+    "@octokit/core": "^3.3.2",
+    "chalk": "^4.1.0",
+    "cli-select": "^1.1.2",
+    "figlet": "^1.5.0",
+    "inquirer": "^8.0.0",
+    "open": "^8.0.4",
+    "prompt-sync": "^4.2.0",
+    "shelljs": "^0.8.4"
+  }
+}

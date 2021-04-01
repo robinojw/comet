@@ -1,0 +1,11 @@
+{
+  "clang-format.fallbackStyle": "Google",
+  "clang-format.language.javascript.fallbackStyle": "Google",
+  "clang-format.language.typescript.fallbackStyle": "Google",
+  "clang-format.style": "Google",
+  "clang-format.executable": "/usr/local/bin/clang-format",
+  "clang-format.language.javascript.style": "Google",
+  "clang-format.language.proto.style": "Google",
+  "clang-format.language.typescript.style": "Google",
+  "editor.formatOnSave": true
+}
