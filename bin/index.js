@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const chalk = require('chalk');
 const figlet = require('figlet');
 const open = require('open');
@@ -9,7 +11,7 @@ const {Octokit} = require('@octokit/core');
 
 class Comet {
   constructor() {
-    this.userData = this.getData;
+    this.userData = {github: {}, phntms: {}, gitlab: {}};
   }
 
   async run() {
