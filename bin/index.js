@@ -8,10 +8,15 @@ const cliSelect = require('cli-select');
 const prompt = require('prompt-sync')();
 const fs = require('fs');
 const {Octokit} = require('@octokit/core');
+const fetch = require('node-fetch');
 
 class Comet {
   constructor() {
-    this.userData = {github: {}, phntms: {}, gitlab: {}};
+    this.userData = {
+      accounts: {github: null, phntms: null, gitlab: null},
+      projects: {}
+    };
+    this.list = [];
   }
 
   async run() {
@@ -21,7 +26,7 @@ class Comet {
         })),
         '\n Comet is a cli tool used for managing Phantom owned repositories \n\n Select a repository provider: \n')
     cliSelect({
-      values: ['GitHub', 'git.phntms', 'GitLab'],
+      values: ['GitHub', 'agency-code', 'GitLab'],
       valueRenderer: (value, selected) => {
         if (selected) {
           return chalk.underline.green(value);
@@ -47,26 +52,28 @@ class Comet {
 
   async github() {
     this.userData = this.getData();
+    const data = this.userData.accounts;
 
     console.log(
         chalk.bold.blueBright('\n ---- You Selected GitHub ---- \n'),
         chalk.green('\n You are now attached to phntms GitHub'));
     this.helpMessage();
 
-    if (this.userData.github) {
+    if (data.github) {
       console.log(
-          'Comet found an existing key: ',
-          chalk.green(this.userData.github.key), '\n');
-      this.githubList(this.userData.github.key);
+          'Comet found an existing key: ', chalk.green(data.github.key), '\n');
+      this.githubList(data.github.key);
     } else {
       await open('https://github.com/settings/tokens');
       const key = prompt(chalk.green('Please enter your GitHub access key: '));
-      this.writeData({github: {key: key}});
+      this.userData.accounts.github = {key: key};
+      this.writeData(this.userData);
+      this.githubList(data.github.key);
     }
   }
 
   /**
-   * Lists all projects from the current provider.
+   * Lists all projects visible to the user on GitHub.
    * @param {key} Github access key
    */
   async githubList(key) {
@@ -91,25 +98,34 @@ class Comet {
     });
   }
 
-  phntms() {}
+  agencyCode() {}
 
   gitlab() {}
 
+  async updateProjects() {
+    try {
+      fetch('https://agency-code-review.googlesource.com/projects/')
+          .then(res => res.json())
+          .then(res => console.dir(res));
+    } catch (err) {
+      console.dir(err);
+    }
+  }
+
+
+
   /**
-   * Gets the users existing configuration from the config file or returns an
-   * empty array if there is not an existing config.
+   * Gets the users existing configuration from the config file or returns the
+   * existing data if a configuration could not be found.
    */
   getData() {
     let data = fs.readFileSync('./config.json'), user;
 
     try {
-      user = JSON.parse(data);
-      console.dir(user.github);
-      return user;
-    } catch (err) {
-      console.log(chalk.red('There has been an error parsing your JSON.'))
-      console.log(err);
-      return {};
+      return JSON.parse(data);
+    } catch {
+      console.log(chalk.red('Comet couldn\'t find an existing configuration'))
+      return this.userData;
     }
   }
 
@@ -126,7 +142,7 @@ class Comet {
         console.log(err.message);
         return;
       }
-      console.log('\nConfiguration saved successfully.')
+      console.log('\nConfiguration saved successfully.\n')
     });
   }
 

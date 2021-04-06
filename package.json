@@ -5,7 +5,7 @@
   "main": "bin/index.js",
   "scripts": {
     "test": "test",
-    "start": "node index.js"
+    "start": "node ./bin/index.js"
   },
   "repository": {
     "type": "git",
@@ -21,13 +21,16 @@
     "@octokit/core": "^3.3.2",
     "chalk": "^4.1.0",
     "cli-select": "^1.1.2",
+    "fetch": "^1.1.0",
     "figlet": "^1.5.0",
     "inquirer": "^8.0.0",
+    "node-fetch": "^2.6.1",
     "open": "^8.0.4",
     "prompt-sync": "^4.2.0",
-    "shelljs": "^0.8.4"
+    "shelljs": "^0.8.4",
+    "yargs": "^16.2.0"
   },
   "bin": {
-   "comet": "./bin/index.js"
+    "comet": "./bin/index.js"
   }
 }
